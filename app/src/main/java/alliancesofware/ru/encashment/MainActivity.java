@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +18,7 @@ import android.widget.Toast;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import adapters.DocumentAdapter;
 import bean.DocumentEncashment;
@@ -45,8 +45,18 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                try {
+                    List<DocumentEncashment> documentEncashments = HelperFactory.getHelper().getDocument().queryForAll();
+                    ArrayList<DocumentEncashment> docs = new ArrayList<DocumentEncashment>();
+                    for (DocumentEncashment doc : documentEncashments) {
+                        if (doc.getStatus() == 1) {
+                            docs.add(doc);
+                        }
+                        new UpLoadFtpDocument().execute(docs);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -72,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateList() {
         ArrayList<DocumentEncashment> encashments = new ArrayList<>();
         try {
-           encashments = (ArrayList<DocumentEncashment>) HelperFactory.getHelper().getDocument().queryForAll();
+            encashments = (ArrayList<DocumentEncashment>) HelperFactory.getHelper().getDocument().queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -145,6 +155,9 @@ public class MainActivity extends AppCompatActivity {
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
+                    List<DocumentEncashment> documentEncashments = new ArrayList<DocumentEncashment>();
+                    documentEncashments.add(documentEncashment);
+                    new UpLoadFtpDocument().execute(documentEncashments);
                     updateList();
                 }
             });
@@ -164,7 +177,9 @@ public class MainActivity extends AppCompatActivity {
             builder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
+                    List<DocumentEncashment> documentEncashments = new ArrayList<DocumentEncashment>();
+                    documentEncashments.add(documentEncashment);
+                    new UpLoadFtpDocument().execute(documentEncashments);
                 }
             });
 
@@ -182,7 +197,9 @@ public class MainActivity extends AppCompatActivity {
             builder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
+                    List<DocumentEncashment> documentEncashments = new ArrayList<DocumentEncashment>();
+                    documentEncashments.add(documentEncashment);
+                    new UpLoadFtpDocument().execute(documentEncashments);
                 }
             });
 
@@ -213,6 +230,38 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... params) {
             String result = new DownloadFtp(MainActivity.this).downloadFileFtp(MainActivity.this);
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+            Toast.makeText(MainActivity.this, s, Toast.LENGTH_LONG).show();
+            updateList();
+        }
+    }
+
+    private class UpLoadFtpDocument extends AsyncTask<List<DocumentEncashment>, Void, String> {
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setTitle("Обмен");
+            progressDialog.setMessage("Выгрузка документов...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(List<DocumentEncashment>... params) {
+            String result = "Нет документов для обмена!";
+            for (DocumentEncashment doc : params[0]) {
+                result = new DownloadFtp(MainActivity.this).upLoadFileFtp(null, doc);
+            }
             return result;
         }
 

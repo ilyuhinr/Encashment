@@ -65,18 +65,19 @@ public class DownloadFtp {
                 con.setFileType(FTP.BINARY_FILE_TYPE); // Very Important
                 message = searchFile(con, catalog, document);
                 if (message.equals("")) {
+                    file = Utils.generateNoteOnSD(context, Utils.getFileName(document), Utils.getFileName(document));
                     String data = file.getAbsolutePath();
 
                     FileInputStream in = new FileInputStream(new File(data));
                     boolean result = con.storeFile(File.separator + catalog
                             + File.separator + Utils.getFileName(document), in);
                     if (result) {
-                        message = "��������� ������� ��������� �� ������!";
+                        message = "Документ успешно выгружен!";
                         boolean a = con.sendSiteCommand("chmod " + "777 "
                                 + "/catalog/" + Utils.getFileName(document));
-                        updateDocument(document);
+                        updateDocument(document, true);
                     } else {
-                        message = "��������� �� ���������! ��������� ��������� �����������!";
+                        message = "Произошла ошибка при выгрузке документа!(Номер ошибки 1513)";
                     }
                     in.close();
 
@@ -91,7 +92,7 @@ public class DownloadFtp {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            message = "��������� �� ���������! ��������� ��������� ����������� � ���������� � ����������!";
+            message = "Ошибка при выгрузку документов! (Номер ошибки 1437)";
         }
         return message;
     }
@@ -121,18 +122,18 @@ public class DownloadFtp {
                     message = "Обновление прошло успешно!";
                     Utils.setUpdateDBDate(context);
                 } else {
-                    message = "Произошла ошибка во время обоновления!";
+                    message = "Произошла ошибка во время обоновления! (Номер ошибки 1827)";
                 }
                 con.logout();
                 con.disconnect();
 
             } else {
-                message = "Не удалось подключиться к FTP серверу. Проверьте логин и пароль";
+                message = "Не удалось подключиться к FTP серверу. Проверьте логин и пароль (Номер ошибки 1154)";
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            message = "Произошла ошибка при загрузке базы данных! \n " + e.getMessage();
+            message = "Произошла ошибка при загрузке базы данных! (Номер ошибки 1771) \n " + e.getMessage();
         }
         return message;
     }
@@ -180,8 +181,8 @@ public class DownloadFtp {
         return message;
     }
 
-    public void updateDocument(DocumentEncashment document) {
-        document.setStatus(1);
+    public void updateDocument(DocumentEncashment document, boolean inServer) {
+        document.setStatus(inServer ? 2 : 1);
 
         try {
             HelperFactory.getHelper().getDocument().update(document);

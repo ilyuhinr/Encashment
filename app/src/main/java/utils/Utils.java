@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -255,5 +258,24 @@ public class Utils {
 
         return encashments;
     }
+
+    public static File generateNoteOnSD(Context context, String sFileName, String sBody) {
+        File gpxfile = null;
+        try {
+            File root = new File(context.getApplicationInfo().dataDir);
+            if (!root.exists()) {
+                root.mkdirs();
+            }
+            gpxfile = new File(root, sFileName);
+            FileWriter writer = new FileWriter(gpxfile);
+            writer.append(sBody);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return gpxfile;
+    }
+
 
 }
