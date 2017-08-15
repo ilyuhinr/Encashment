@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="FTP Сервер" >
+        <EditTextPreference
+            android:dialogMessage="Укажите адрес сервера"
+            android:dialogTitle="Сервер"
+            android:key="pref_address"
+            android:summary="Адрес сервера обмена"
+            android:title="Адрес сервера" />
+          <EditTextPreference
+            android:defaultValue="21"
+            android:dialogMessage="Укажите порт сервера обмена"
+            android:dialogTitle="Порт сервера"
+            android:key="pref_port"
+            android:summary="Порт сервера обмена"
+            android:title="Порт сервера" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Параметры подключения" >
+        <EditTextPreference
+            android:dialogMessage="Введите логин"
+            android:dialogTitle="Логин"
+            android:key="pref_login"
+            android:summary="Логин для подключения"
+            android:title="Логин" />
+        <EditTextPreference
+            android:dialogMessage="Введите пароль"
+            android:dialogTitle="Пароль"
+            android:key="pref_password"
+            android:summary="Пароль к серверу обмена"
+            android:title="Пароль" />
+      
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Каталог" >
+        <EditTextPreference
+            android:dialogMessage="Каталог обмена данными на сервере"
+            android:dialogTitle="Каталог"
+            android:key="pref_catalog"
+            android:summary="Путь к каталогу обмена данными на ftp сервере"
+            android:title="Каталог" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Проверка подключения" >
+        <Preference
+            android:key="pref_verifi"
+            android:summary="Проверить соединение с сервером обмена"
+            android:title="Проверить" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

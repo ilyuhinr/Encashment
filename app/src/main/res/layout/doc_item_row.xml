@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/number_item_doc"
+        android:layout_width="25dp"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="4dp"
+        android:background="#25bf75"
+        android:gravity="center_horizontal"
+        android:padding="2dp"
+        android:text="1."
+        android:textColor="#ffffff" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="2dp"
+        android:background="#ffffff"
+        android:orientation="horizontal"
+        android:padding="2dp">
+
+        <ImageView
+            android:id="@+id/doc_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/icon_documents"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:src="@mipmap/ic_files_noload" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name_contarcting_doc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="name"
+                android:textColor="@color/def"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/sum_docs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:background="@drawable/icon_documents"
+                android:padding="2dp"
+                android:text="summa"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_weight="2.6"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp">
+
+            <TextView
+                android:id="@+id/no_docs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:text="count"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/date_doc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="2dp"
+                android:text="price"
+                android:textSize="8sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
