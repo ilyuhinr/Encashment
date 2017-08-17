@@ -4,6 +4,7 @@ package bean;
  * Created by User on 13.08.2017.
  */
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -17,7 +18,8 @@ public class DocumentEncashment {
     private int id;
     @DatabaseField
     private String number;
-    @DatabaseField
+    @DatabaseField(columnName = "dateDoc", dataType = DataType.DATE_STRING,
+            format = "yyyy-MM-dd")
     private Date dateDoc;
     @DatabaseField
     private float summ;
