@@ -65,16 +65,16 @@ public class DownloadFtp {
                 con.setFileType(FTP.BINARY_FILE_TYPE); // Very Important
                 message = searchFile(con, catalog, document);
                 if (message.equals("")) {
-                    file = Utils.generateNoteOnSD(context, Utils.getFileName(document), Utils.getFileName(document));
+                    file = Utils.generateNoteOnSD(context, Utils.getFileName(document).substring(1), Utils.getFileName(document));
                     String data = file.getAbsolutePath();
 
                     FileInputStream in = new FileInputStream(new File(data));
                     boolean result = con.storeFile(File.separator + catalog
-                            + File.separator + Utils.getFileName(document), in);
+                            + File.separator + Utils.getFileName(document).substring(1), in);
                     if (result) {
                         message = "Документ успешно выгружен!";
                         boolean a = con.sendSiteCommand("chmod " + "777 "
-                                + "/catalog/" + Utils.getFileName(document));
+                                + "/catalog/" + Utils.getFileName(document).substring(1));
                         updateDocument(document, true);
                     } else {
                         message = "Произошла ошибка при выгрузке документа!(Номер ошибки 1513)";
@@ -169,7 +169,7 @@ public class DownloadFtp {
             @Override
             public boolean accept(FTPFile ftpFile) {
 
-                return (ftpFile.isFile() && ftpFile.getName().contains(Utils.getFileName(documentEncashment)));
+                return (ftpFile.isFile() && ftpFile.getName().contains(Utils.getFileName(documentEncashment).substring(1)));
             }
         };
 
